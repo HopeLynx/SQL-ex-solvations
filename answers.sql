@@ -18,3 +18,17 @@ SELECT DISTINCT Product.maker,Laptop.speed
 FROM Laptop 
 JOIN Product ON Product.model = Laptop.model
 WHERE Laptop.hd >= 10
+
+-- 7
+SELECT Product.model AS model, price   
+FROM Product INNER JOIN 
+PC ON PC.model=Product.model WHERE maker = 'B'
+UNION
+SELECT Product.model AS model, price   
+FROM Product INNER JOIN 
+Laptop ON Laptop.model=Product.model WHERE maker = 'B'
+UNION
+SELECT Product.model AS model, price   
+FROM Product INNER JOIN 
+Printer ON Printer.model=Product.model WHERE maker = 'B'
+
