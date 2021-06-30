@@ -95,3 +95,18 @@ FROM Printer
 JOIN Product ON Printer.model=Product.model
 WHERE Printer.price = (SELECT MIN(price) FROM Printer WHERE color = 'y' ) and Printer.color = 'y'
 
+-- 19
+SELECT Product.maker, AVG(screen) FROM Laptop
+JOIN Product ON Laptop.model=Product.model
+GROUP BY maker
+
+-- 20
+SELECT Product.maker, COUNT(model) as Count_Model FROM Product
+WHERE type = 'PC'
+GROUP BY maker HAVING COUNT(DISTINCT model) >= 3
+
+-- 21
+SELECT DISTINCT Product.maker,MAX(price) from PC
+JOIN Product ON PC.model=Product.model
+GROUP BY maker
+
