@@ -75,4 +75,23 @@ SELECT Ships.class, name, Classes.country FROM Ships
 JOIN Classes ON Classes.class = Ships.class
 WHERE numGuns >= 10
 
+-- 15
+SELECT hd FROM PC GROUP BY hd HAVING COUNT(HD) >= 2
+
+-- 16
+SELECT DISTINCT PC1.model, PC2.model, PC1.speed, PC1.ram
+FROM PC PC1, PC PC2
+WHERE PC1.speed = PC2.speed and PC1.ram = PC2.ram and PC1.model>PC2.model
+
+-- 17
+SELECT DISTINCT Product.type,Laptop.model,speed
+FROM Laptop
+JOIN Product ON Laptop.model=Product.model
+WHERE speed < ALL(SELECT speed FROM PC)
+
+-- 18
+SELECT DISTINCT Product.maker, Printer.price 
+FROM Printer
+JOIN Product ON Printer.model=Product.model
+WHERE Printer.price = (SELECT MIN(price) FROM Printer WHERE color = 'y' ) and Printer.color = 'y'
 
