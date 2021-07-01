@@ -110,6 +110,56 @@ SELECT DISTINCT Product.maker,MAX(price) from PC
 JOIN Product ON PC.model=Product.model
 GROUP BY maker
 
+-- 22  
+SELECT speed, AVG(price) FROM PC WHERE speed > 600 GROUP BY speed
+
+-- 23
+SELECT DISTINCT maker FROM Product 
+JOIN PC ON Product.model=PC.model WHERE PC.speed >= 750 and maker IN
+(
+SELECT maker from Product 
+ JOIN Laptop on Product.model=Laptop.model
+ WHERE Laptop.speed >= 750
+)
+
+-- 24
+WITH prices AS (
+SELECT Product.maker,PC.model, PC.price FROM PC
+JOIN Product ON PC.model=Product.model
+UNION ALL
+SELECT Product.maker,Laptop.model, Laptop.price FROM Laptop
+JOIN Product ON Laptop.model=Product.model
+UNION ALL
+SELECT Product.maker,Printer.model, Printer.price FROM Printer
+JOIN Product ON Printer.model=Product.model
+) SELECT DISTINCT model FROM prices WHERE price = (SELECT MAX(price) FROM prices)
+
+-- 25
+SELECT DISTINCT maker from Product
+WHERE maker IN 
+(SELECT DISTINCT maker from Product
+JOIN PC ON Product.model= PC.model WHERE
+PC.speed = (SELECT MAX(speed) FROM PC WHERE PC.ram = (SELECT MIN(ram) FROM PC))
+and ram = (SELECT MIN(ram) FROM PC))
+and maker IN (SELECT DISTINCT maker FROM Product WHERE type = 'Printer')
+
+-- 26
+WITH prices AS (
+SELECT Product.maker,PC.model, PC.price FROM PC
+JOIN Product ON PC.model=Product.model
+UNION ALL
+SELECT Product.maker,Laptop.model, Laptop.price FROM Laptop
+JOIN Product ON Laptop.model=Product.model
+)
+SELECT AVG(price) AS AVG_price FROM prices WHERE maker = 'A'
+
+-- 27
+WITH pc_full AS (
+SELECT Product.maker,PC.model,speed,ram,hd,cd,price FROM PC
+JOIN Product ON PC.model=Product.model
+) SELECT maker, AVG(hd) AS Avg_hd FROM pc_full 
+GROUP BY maker HAVING maker IN (SELECT DISTINCT maker from Product WHERE type = 'Printer')
+
 
 
 
