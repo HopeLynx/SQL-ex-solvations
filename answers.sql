@@ -110,3 +110,52 @@ SELECT DISTINCT Product.maker,MAX(price) from PC
 JOIN Product ON PC.model=Product.model
 GROUP BY maker
 
+
+
+
+-- 1r
+-- FAILED
+SELECT DISTINCT Product.model FROM Product
+JOIN PC Kostya ON Kostya.model = Product.model,
+JOIN PC Misha ON Misha.model = Product.model,
+JOIN Laptop Dima ON Dima.model = Product.model,
+JOIN Laptop Olya ON Olya.model = Product.model,
+JOIN Printer Tanya ON Tanya.model = Product.model,
+JOIN Printer Vitya ON Vitya.model = Product.model
+WHERE
+--Dima.maker = Misha.maker and
+Tanya.type <> Vitya.type and
+Tanya.color = Vitya.color and
+Dima.screen = Olya.screen+3 and
+Misha.price = 4*Tanya.price and
+stuff(Vitya.model, 3, 1, '') = stuff(Olya.model, 3, 1, '') and
+Kostya.speed = Misha.speed and Kostya.hd = Dima.hd and Kostya.ram = Olya.ram and
+Kostya.price = Vitya.price
+
+-- WORKING
+SELECT DISTINCT Kostya.model
+FROM
+(SELECT prod.maker, l.hd, l.screen
+ FROM product prod
+ JOIN laptop l on l.model = prod.model) Dima,
+(SELECT prod.maker, pc.speed, pc.price
+ FROM product prod
+ JOIN pc on pc.model = prod.model) Misha,
+(SELECT color, type, price
+ FROM printer) Tanya,
+(SELECT model, color, type, price
+ FROM printer) Vitya,
+(SELECT model, ram, screen
+ FROM laptop) Olya,
+(SELECT model, speed, ram, hd, price
+ FROM pc) Kostya
+WHERE
+Dima.maker = Misha.maker and
+Tanya.type <> Vitya.type and
+Tanya.color = Vitya.color and
+Dima.screen = Olya.screen+3 and
+Misha.price = 4*Tanya.price and
+stuff(Vitya.model, 3, 1, '') = stuff(Olya.model, 3, 1, '') and
+Kostya.speed = Misha.speed and Kostya.hd = Dima.hd and Kostya.ram = Olya.ram and
+Kostya.price = Vitya.price
+
