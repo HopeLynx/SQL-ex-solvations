@@ -207,6 +207,14 @@ SELECT name FROM Ships WHERE class = name
 UNION
 SELECT ship AS name FROM classes,outcomes WHERE classes.class = outcomes.ship
 
+-- 37 not working
+SELECT class FROM Ships GROUP BY class HAVING count(name) = 1
+UNION
+SELECT ship as class FROM
+(SELECT ship FROM classes,outcomes WHERE classes.class = outcomes.ship) ot
+GROUP BY ship HAVING COUNT(ship) = 1
+
+
 
 
 
