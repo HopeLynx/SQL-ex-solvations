@@ -189,6 +189,11 @@ SELECT class,country FROM classes WHERE bore >= 16
 -- 33
 SELECT ship FROM Outcomes WHERE battle = 'North Atlantic' AND result = 'sunk'
 
+-- 36
+SELECT name FROM Ships WHERE class = name
+UNION
+SELECT ship AS name FROM classes,outcomes WHERE classes.class = outcomes.ship
+
 
 
 
