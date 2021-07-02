@@ -164,6 +164,15 @@ GROUP BY maker HAVING maker IN (SELECT DISTINCT maker from Product WHERE type = 
 WITH tmp AS (SELECT DISTINCT maker FROM Product 
 GROUP BY maker HAVING COUNT(model) = 1) SELECT COUNT(maker) AS qty FROM tmp
 
+-- 29
+SELECT inp.point, inp.date, inc, out
+FROM income_o inp LEFT JOIN outcome_o outp ON inp.point = outp.point
+AND inp.date = outp.date
+UNION
+SELECT outp.point, outp.date, inc, out
+FROM income_o inp RIGHT JOIN outcome_o outp ON inp.point = outp.point
+AND inp.date = outp.date
+
 -- 30
 SELECT point, date, SUM(sum_out) , SUM(sum_inc) FROM
 (
