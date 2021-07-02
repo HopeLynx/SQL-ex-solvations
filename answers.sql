@@ -160,6 +160,26 @@ JOIN Product ON PC.model=Product.model
 ) SELECT maker, AVG(hd) AS Avg_hd FROM pc_full 
 GROUP BY maker HAVING maker IN (SELECT DISTINCT maker from Product WHERE type = 'Printer')
 
+-- 28
+WITH tmp AS (SELECT DISTINCT maker FROM Product 
+GROUP BY maker HAVING COUNT(model) = 1) SELECT COUNT(maker) AS qty FROM tmp
+
+-- 30
+SELECT point, date, SUM(sum_out) , SUM(sum_inc) FROM
+(
+SELECT point, date, SUM(inc) as sum_inc, null as sum_out 
+FROM Income GROUP BY point, date
+UNION
+SELECT point, date, null as sum_inc, SUM(out) as sum_out
+FROM Outcome GROUP BY point, date
+) AS t GROUP BY point,date ORDER BY point
+
+-- 31
+SELECT class,country FROM classes WHERE bore >= 16
+
+-- 33
+SELECT ship FROM Outcomes WHERE battle = 'North Atlantic' AND result = 'sunk'
+
 
 
 
