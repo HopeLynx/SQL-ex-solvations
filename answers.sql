@@ -189,6 +189,14 @@ SELECT class,country FROM classes WHERE bore >= 16
 -- 33
 SELECT ship FROM Outcomes WHERE battle = 'North Atlantic' AND result = 'sunk'
 
+-- 34
+WITH no_rules AS (
+SELECT name, launched, Ships.class, Classes.displacement, Classes. type FROM Ships
+JOIN Classes ON Classes.class = Ships.class
+) SELECT DISTINCT name FROM no_rules 
+WHERE displacement > 35 * 1000 AND  launched >= 1922 AND type = 'bb'
+
+
 -- 36
 SELECT name FROM Ships WHERE class = name
 UNION
